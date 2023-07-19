@@ -43,10 +43,14 @@ function geocode(event) {
             return response.json();
         })
         .then(function(data) {
-            console.log(`Weather data:\n${data}`);
-            
+            return printForecast(data);
         })
-
     searchBar.value = "";
     return latLong;   
 }
+
+
+function printForecast(forecastData) {
+    console.log(`Weather data!!:\n${forecastData.list[0].dt}`);
+    
+}   
