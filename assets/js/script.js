@@ -43,14 +43,14 @@ function geocode(event) {
             return response.json();
         })
         .then(function(data) {
-            return printForecast(data);
+            return getFiveDayForecast(data);
         })
     searchBar.value = "";
-    return latLong;   
+    // return latLong;   
 }
 
 
-function printForecast(forecastData) {
+function getFiveDayForecast(forecastData) {
     console.log(`Weather data!!:\n${forecastData.list[0].dt}`);
     var fullForecast = forecastData.list
     var trimmedFiveDay = []
@@ -58,7 +58,7 @@ function printForecast(forecastData) {
         const oneDay = fullForecast[i];
         dailyWeatherObj = {
             "date": oneDay.dt_txt,
-            "icon": oneDay.weather.icon,
+            "icon": oneDay.weather[0].icon,
             "temp": oneDay.main.temp,
             "wind": oneDay.wind.speed,
             "humidity": oneDay.main.humidity
@@ -67,4 +67,18 @@ function printForecast(forecastData) {
         trimmedFiveDay.push(dailyWeatherObj)
     }  
     console.log(trimmedFiveDay);
+    return printFiveDayForecast(trimmedFiveDay);
+}
+
+function printFiveDayForecast (forecast) {
+    for (let i = 0; i < forecast.length; i++) {
+        var dayOfWeather = forecast[i];
+        
+        for (const weatherType in dayOfWeather) {
+            console.log(`${weatherType}: ${dayOfWeather[weatherType]}`);
+
+        }
+        // forecastCard.classList.add("card", "bar", "baz");
+
+    }
 }
