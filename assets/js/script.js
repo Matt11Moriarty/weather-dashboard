@@ -36,7 +36,7 @@ function geocode(event) {
                 latLong[0] = data[0].lat;
                 latLong[1] = data[0].lon;
                 console.log(latLong);
-                return fetch(`${endpoint}/data/2.5/forecast?lat=${latLong[0]}&lon=${latLong[1]}&appid=${apiKey}&units=imperial&cnt=3`);
+                return fetch(`${endpoint}/data/2.5/forecast?lat=${latLong[0]}&lon=${latLong[1]}&appid=${apiKey}&units=imperial`);
             }
         })
         .then(function (response) {
@@ -52,5 +52,19 @@ function geocode(event) {
 
 function printForecast(forecastData) {
     console.log(`Weather data!!:\n${forecastData.list[0].dt}`);
-    
-}   
+    var fullForecast = forecastData.list
+    var trimmedFiveDay = []
+    for (let i = 0; i < fullForecast.length; i+=8) {
+        const oneDay = fullForecast[i];
+        dailyWeatherObj = {
+            "date": oneDay.dt_txt,
+            "icon": oneDay.weather.icon,
+            "temp": oneDay.main.temp,
+            "wind": oneDay.wind.speed,
+            "humidity": oneDay.main.humidity
+        }
+
+        trimmedFiveDay.push(dailyWeatherObj)
+    }  
+    console.log(trimmedFiveDay);
+}
