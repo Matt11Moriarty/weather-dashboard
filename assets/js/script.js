@@ -4,7 +4,7 @@ var endpoint = 'http://api.openweathermap.org'
 
 var searchBar = document.querySelector('#city-searchbar');
 var searchButton = document.querySelector('#city-search-submit-btn');
-
+var forecastSection = document.querySelector('#forecast-section');
 
 searchButton.addEventListener('click', geocode);
 
@@ -46,7 +46,6 @@ function geocode(event) {
             return getFiveDayForecast(data);
         })
     searchBar.value = "";
-    // return latLong;   
 }
 
 
@@ -63,7 +62,6 @@ function getFiveDayForecast(forecastData) {
             "wind": oneDay.wind.speed,
             "humidity": oneDay.main.humidity
         }
-
         trimmedFiveDay.push(dailyWeatherObj)
     }  
     console.log(trimmedFiveDay);
@@ -73,12 +71,24 @@ function getFiveDayForecast(forecastData) {
 function printFiveDayForecast (forecast) {
     for (let i = 0; i < forecast.length; i++) {
         var dayOfWeather = forecast[i];
-        
+        var forecastCard = document.createElement("div")
+        forecastCard.classList.add("card");
+
         for (const weatherType in dayOfWeather) {
             console.log(`${weatherType}: ${dayOfWeather[weatherType]}`);
-
+            if (weatherType === "date") {
+                var date = document.createElement("h3")
+                forecastCard.append(date)
+                date.textContent = dayOfWeather[weatherType];
+            }
+            else {
+                var condition = document.createElement("span");
+                condition.textContent = dayOfWeather[weatherType];
+                forecastCard.append(condition)
+            }
         }
-        // forecastCard.classList.add("card", "bar", "baz");
+        forecastSection.append(forecastCard);
 
     }
+   
 }
