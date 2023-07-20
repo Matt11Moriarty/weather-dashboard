@@ -41,14 +41,14 @@ function currentDate () {
     return currentDate;
 }
 
-  
-//api call function
+
 function searchOnClick(event) {
     event.preventDefault();
     var city = searchBar.value;
     getData(city);
 }
 
+//hits the api's and gets the data for both the 5day and the Current day, then adds them each to the weather object
 function getData(city){
     var geocodeUri = `${endpoint}/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
     
@@ -98,6 +98,8 @@ function getData(city){
 
 
 //display functions
+
+
 function currentDay (todaysData) {
 
     cityDateText.textContent = `${todaysData.name} (${currentDate()})`;
