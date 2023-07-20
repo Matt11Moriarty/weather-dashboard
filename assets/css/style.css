@@ -10,3 +10,8 @@ body {
 .clear-history {
     background: rgba(255, 0, 0, 0.3);
 }
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+  }

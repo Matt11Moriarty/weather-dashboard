@@ -100,7 +100,12 @@ function getData(city){
 //display functions
 function currentDay (todaysData) {
 
-    cityDateText.textContent = `${todaysData.name} (${currentDate()})`
+    cityDateText.textContent = `${todaysData.name} (${currentDate()})`;
+    var currentDayIcon = document.createElement("img");
+    currentDayIcon.classList.add("weather-icon");
+    currentDayIcon.src = `http://openweathermap.org/img/w/${todaysData.weather[0].icon}.png`;
+    cityDateText.append(currentDayIcon)
+
     todaysTemp.textContent = `Temp: ${todaysData.main.temp}°F`;
     todaysHumidity.textContent = `Humidity: ${todaysData.main.humidity}%`;
     todaysWind.textContent = `Wind: ${todaysData.wind.speed}mph`;
@@ -153,11 +158,12 @@ function printFiveDayForecast (forecast) {
                 var date = document.createElement("h6")
                 forecastCard.append(date)
                 date.textContent = currentDate();
+                date.setAttribute("style", "font-size: 20px");
             }
             else if (weatherType === "icon") {
-                var condition = document.createElement("span");
-                condition.textContent = `${dayOfWeather[weatherType][0]}`;
-                condition.classList.add("font-weight-light");
+                var condition = document.createElement("img");
+                condition.classList.add("weather-icon");
+                condition.src = `http://openweathermap.org/img/w/${dayOfWeather[weatherType][0]}.png`;
                 forecastCard.append(condition)
             }
             else {
@@ -165,6 +171,7 @@ function printFiveDayForecast (forecast) {
                 condition.textContent = `${dayOfWeather[weatherType][1]}: ${dayOfWeather[weatherType][0]}`;
                 condition.classList.add("font-weight-light");
                 forecastCard.append(condition)
+                condition.setAttribute("style", "font-size: 13px");
             }
         }
         forecastSection.append(forecastCard);
