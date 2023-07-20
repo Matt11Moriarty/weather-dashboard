@@ -34,21 +34,6 @@ function currentDate () {
     return currentDate;
 }
 
-function reformatDate(inputDate) {
-    const regex = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
-    const match = inputDate.match(regex);
-    
-    if (match) {
-      const year = match[1];
-      const month = match[2];
-      const day = match[3];
-      
-      return `${month}/${day}/${year}`;
-    }
-    
-    return inputDate;
-  }
-
   
 //api call functions
 function geocode(event) {
@@ -146,7 +131,7 @@ function printFiveDayForecast (forecast) {
             if (weatherType === "date") {
                 var date = document.createElement("h6")
                 forecastCard.append(date)
-                date.textContent = reformatDate(dayOfWeather[weatherType][0]);
+                date.textContent = currentDate();
             }
             else if (weatherType === "icon") {
                 var condition = document.createElement("span");
