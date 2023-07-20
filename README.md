@@ -11,3 +11,4 @@ Resources:
 7. Skip through an array: https://stackoverflow.com/questions/33482812/javascript-take-every-nth-element-of-array
 8. For - in loop: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in
 9. Current date (no jquery): https://www.freecodecamp.org/news/javascript-get-current-date-todays-date-in-js/
+10. Opacity on bg but not text: https://www.geeksforgeeks.org/set-the-opacity-only-to-background-color-not-on-the-text-in-css/

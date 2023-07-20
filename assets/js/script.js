@@ -13,12 +13,19 @@ var cityDateText = document.querySelector('#cityDate');
 var todaysTemp = document.querySelector("#todayTemp")
 var todaysWind = document.querySelector("#todayWind");
 var todaysHumidity = document.querySelector("#todayHum");
+var searchHistory = document.querySelector('#search-history');
+var clearHistory = document.querySelector('#clear-history');
 
 //event listeners
 searchButton.addEventListener('click', function (event) {
-    geocode(event);
+    searchOnClick(event);
+    saveToHistory(event);
 }
 );
+clearHistory.addEventListener('click', function(event){
+    searchHistory.innerHTML = '';
+}
+) 
 
 
 //utility functions
@@ -36,16 +43,18 @@ function currentDate () {
 
   
 //api call function
-function geocode(event) {
-    
+function searchOnClick(event) {
     event.preventDefault();
     var city = searchBar.value;
+    getData(city);
+}
+
+function getData(city){
     var geocodeUri = `${endpoint}/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
     
     var latLong = [];
     var weather = {};
-    console.log(city);
-    console.log(geocodeUri);
+
     fetch (geocodeUri) 
 
         .then(function (response) {
@@ -55,18 +64,19 @@ function geocode(event) {
         .then(function(data) {
 
             if (data.length === 0) {
-                console.log("Please enter a valid city")
+                alert("Enter a valid city or else 🔪")
                 return;
             }
             else {
-                console.log(data);
                 latLong[0] = data[0].lat;
                 latLong[1] = data[0].lon;
-                console.log(latLong);
+
                 return fetch(`${endpoint}/data/2.5/forecast?lat=${latLong[0]}&lon=${latLong[1]}&appid=${apiKey}&units=imperial`);
             }
         })
         .then(function (response) {
+            searchBar.value = "";
+
             return response.json();
         })
         .then(function(data) {
@@ -80,28 +90,46 @@ function geocode(event) {
             .then(function(data) {
                 weather.today = currentDay(data)
             })
-    searchBar.value = "";
-    return weather;
-        })
-
     
+    return weather;
+    }
+)
 }
 
 
 //display functions
 function currentDay (todaysData) {
-    console.log(todaysData)
-    cityDateText.textContent = `${todaysData.name} (${currentDate()})`
+
+    cityDateText.textContent = `${todaysData.name} (${currentDate()})`;
+    var currentDayIcon = document.createElement("img");
+    currentDayIcon.classList.add("weather-icon");
+    currentDayIcon.src = `http://openweathermap.org/img/w/${todaysData.weather[0].icon}.png`;
+    cityDateText.append(currentDayIcon)
+
     todaysTemp.textContent = `Temp: ${todaysData.main.temp}°F`;
     todaysHumidity.textContent = `Humidity: ${todaysData.main.humidity}%`;
     todaysWind.textContent = `Wind: ${todaysData.wind.speed}mph`;
 
 }
 
+function test() {
+    console.log("it works!!");
+}
+function saveToHistory(event) {
+    var historyButton = document.createElement("button")
+    historyButton.classList.add("btn", "btn-light", "m-1", "col-12")
+    historyButton.setAttribute("style", "max-width: 9rem;")
+    historyButton.textContent = searchBar.value;
+    
+
+    searchHistory.prepend(historyButton);
+    historyButton.onclick = () => {getData(historyButton.textContent)};
+}
+
 
 function getFiveDayForecast(forecastData) {
     forecastSection.innerHTML = '';
-    console.log(`Weather data!!:\n${forecastData.list[0].dt}`);
+
     var fullForecast = forecastData.list
     var trimmedFiveDay = []
     for (let i = 0; i < fullForecast.length; i+=8) {
@@ -115,7 +143,6 @@ function getFiveDayForecast(forecastData) {
         }
         trimmedFiveDay.push(dailyWeatherObj)
     }  
-    console.log(trimmedFiveDay);
     return printFiveDayForecast(trimmedFiveDay);
 }
 
@@ -124,19 +151,19 @@ function printFiveDayForecast (forecast) {
         var dayOfWeather = forecast[i];
         var forecastCard = document.createElement("div")
 
-        forecastCard.classList.add("card", "col-12", "col-lg-2", "text-light", "bg-dark", "mb-2", "mx-2");
+        forecastCard.classList.add("card", "col-10", "col-lg-2", "text-light", "bg-dark", "mb-2", "mx-2");
 
         for (const weatherType in dayOfWeather) {
-            console.log(`${weatherType}: ${dayOfWeather[weatherType]}`);
             if (weatherType === "date") {
                 var date = document.createElement("h6")
                 forecastCard.append(date)
                 date.textContent = currentDate();
+                date.setAttribute("style", "font-size: 20px");
             }
             else if (weatherType === "icon") {
-                var condition = document.createElement("span");
-                condition.textContent = `${dayOfWeather[weatherType][0]}`;
-                condition.classList.add("font-weight-light");
+                var condition = document.createElement("img");
+                condition.classList.add("weather-icon");
+                condition.src = `http://openweathermap.org/img/w/${dayOfWeather[weatherType][0]}.png`;
                 forecastCard.append(condition)
             }
             else {
@@ -144,6 +171,7 @@ function printFiveDayForecast (forecast) {
                 condition.textContent = `${dayOfWeather[weatherType][1]}: ${dayOfWeather[weatherType][0]}`;
                 condition.classList.add("font-weight-light");
                 forecastCard.append(condition)
+                condition.setAttribute("style", "font-size: 13px");
             }
         }
         forecastSection.append(forecastCard);
