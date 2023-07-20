@@ -56,11 +56,11 @@ function getFiveDayForecast(forecastData) {
     for (let i = 0; i < fullForecast.length; i+=8) {
         const oneDay = fullForecast[i];
         dailyWeatherObj = {
-            "date": oneDay.dt_txt,
-            "icon": oneDay.weather[0].icon,
-            "temp": oneDay.main.temp,
-            "wind": oneDay.wind.speed,
-            "humidity": oneDay.main.humidity
+            "Date: ": oneDay.dt_txt,
+            "": oneDay.weather[0].icon,
+            "Temp: ": oneDay.main.temp,
+            "Wind: ": oneDay.wind.speed,
+            "Humidity: ": oneDay.main.humidity
         }
         trimmedFiveDay.push(dailyWeatherObj)
     }  
@@ -72,18 +72,18 @@ function printFiveDayForecast (forecast) {
     for (let i = 0; i < forecast.length; i++) {
         var dayOfWeather = forecast[i];
         var forecastCard = document.createElement("div")
-        forecastCard.classList.add("card");
+        forecastCard.classList.add("card", "col-12", "col-md-6", "col-sm-12", "text-light", "bg-dark");
 
         for (const weatherType in dayOfWeather) {
             console.log(`${weatherType}: ${dayOfWeather[weatherType]}`);
-            if (weatherType === "date") {
-                var date = document.createElement("h3")
+            if (weatherType === "Date: ") {
+                var date = document.createElement("h6")
                 forecastCard.append(date)
                 date.textContent = dayOfWeather[weatherType];
             }
             else {
                 var condition = document.createElement("span");
-                condition.textContent = dayOfWeather[weatherType];
+                condition.textContent = `${weatherType}${dayOfWeather[weatherType]}`;
                 forecastCard.append(condition)
             }
         }
