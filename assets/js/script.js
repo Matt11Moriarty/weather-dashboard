@@ -1,6 +1,27 @@
 var apiKey = 'fd5bcdf5b68d3fbf74e736379ffe6e3c';
 var endpoint = 'http://api.openweathermap.org'
 
+
+
+
+
+//query selectors
+var searchBar = document.querySelector('#city-searchbar');
+var searchButton = document.querySelector('#city-search-submit-btn');
+var forecastSection = document.querySelector('#forecast-section');
+var cityDateText = document.querySelector('#cityDate');
+var todaysTemp = document.querySelector("#todayTemp")
+var todaysWind = document.querySelector("#todayWind");
+var todaysHumidity = document.querySelector("#todayHum");
+
+//event listeners
+searchButton.addEventListener('click', function (event) {
+    geocode(event);
+}
+);
+
+
+//utility functions
 function currentDate () {
     const date = new Date();
 
@@ -13,24 +34,23 @@ function currentDate () {
     return currentDate;
 }
 
+function reformatDate(inputDate) {
+    const regex = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
+    const match = inputDate.match(regex);
+    
+    if (match) {
+      const year = match[1];
+      const month = match[2];
+      const day = match[3];
+      
+      return `${month}/${day}/${year}`;
+    }
+    
+    return inputDate;
+  }
 
-
-
-var searchBar = document.querySelector('#city-searchbar');
-var searchButton = document.querySelector('#city-search-submit-btn');
-var forecastSection = document.querySelector('#forecast-section');
-var cityDateText = document.querySelector('#cityDate');
-
-searchButton.addEventListener('click', function (event) {
-    geocode(event);
-    currentWeather(event);
-}
-);
-
-function currentWeather(event) {
-
-}
-
+  
+//api call functions
 function geocode(event) {
     
     event.preventDefault();
@@ -75,17 +95,22 @@ function geocode(event) {
             .then(function(data) {
                 weather.today = currentDay(data)
             })
-            console.log(weather);
-            searchBar.value = "";
-            return weather;
+    searchBar.value = "";
+    return weather;
         })
 
     
 }
 
+
+//display functions
 function currentDay (todaysData) {
     console.log(todaysData)
     cityDateText.textContent = `${todaysData.name} (${currentDate()})`
+    todaysTemp.textContent = `Temp: ${todaysData.main.temp}°F`;
+    todaysHumidity.textContent = `Humidity: ${todaysData.main.humidity}%`;
+    todaysWind.textContent = `Wind: ${todaysData.wind.speed}mph`;
+
 }
 
 
@@ -97,11 +122,11 @@ function getFiveDayForecast(forecastData) {
     for (let i = 0; i < fullForecast.length; i+=8) {
         const oneDay = fullForecast[i];
         dailyWeatherObj = {
-            "Date: ": oneDay.dt_txt,
-            "": oneDay.weather[0].icon,
-            "Temp: ": oneDay.main.temp,
-            "Wind: ": oneDay.wind.speed,
-            "Humidity: ": oneDay.main.humidity
+            "date": [oneDay.dt_txt, "Date"],
+            "icon": [oneDay.weather[0].icon, ""],
+            "temp": [oneDay.main.temp, "Temp"],
+            "wind": [oneDay.wind.speed, "Wind"],
+            "humidity": [oneDay.main.humidity, "Humidity"],
         }
         trimmedFiveDay.push(dailyWeatherObj)
     }  
@@ -118,20 +143,24 @@ function printFiveDayForecast (forecast) {
 
         for (const weatherType in dayOfWeather) {
             console.log(`${weatherType}: ${dayOfWeather[weatherType]}`);
-            if (weatherType === "Date: ") {
+            if (weatherType === "date") {
                 var date = document.createElement("h6")
                 forecastCard.append(date)
-                date.textContent = dayOfWeather[weatherType];
+                date.textContent = reformatDate(dayOfWeather[weatherType][0]);
+            }
+            else if (weatherType === "icon") {
+                var condition = document.createElement("span");
+                condition.textContent = `${dayOfWeather[weatherType][0]}`;
+                condition.classList.add("font-weight-light");
+                forecastCard.append(condition)
             }
             else {
                 var condition = document.createElement("span");
-                condition.textContent = `${weatherType}${dayOfWeather[weatherType]}`;
+                condition.textContent = `${dayOfWeather[weatherType][1]}: ${dayOfWeather[weatherType][0]}`;
                 condition.classList.add("font-weight-light");
                 forecastCard.append(condition)
             }
         }
         forecastSection.append(forecastCard);
-
     }
-   
 }
