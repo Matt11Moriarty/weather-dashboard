@@ -26,16 +26,18 @@
         <div class="row">
 
             <div class="col-12 col-md-4 p-5">
-                <div class="card">
+                <div class="card p-3 justify-content-center">
                     <h4 class="card-header">Search By City</h4>
                     <form id="user-form" class="card-body">
-                        <input id="city-searchbar" type="text" autofocus="true" class="form-input" placeholder="search city"/>
+                        <input id="city-searchbar" type="text" autofocus="true" class="form-input col-12" style="max-width: 12rem;" placeholder="search city"/>
                         <button id="city-search-submit-btn" type="submit" class="btn btn-primary p-1 my-1">Search</button>
                     </form>
-                    <h5 id="search-history" class="m-1">Search History:</h5>
-                    <button class="btn btn-light m-1">hist1</button>
-                    <button class="btn btn-light m-1">hist2</button>
-
+                    <h5 class="m-1">Search History:</h5>
+                    <div id="search-history" class="col-12 d-flex flex-column">
+                        <!-- <button class="btn btn-light m-1 col-12 ">hist1</button>
+                        <button class="btn btn-light m-1">hist2</button> -->
+                    </div>
+                    <button id="clear-history" class="btn btn-light m-1 col-10 align-center clear-history" style="max-width: 9rem;">Clear History</button>
                 </div>
             </div>
 
