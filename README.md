@@ -10,3 +10,4 @@ Resources:
 6. Nested fetches: https://stackoverflow.com/questions/40981040/using-a-fetch-inside-another-fetch-in-javascript
 7. Skip through an array: https://stackoverflow.com/questions/33482812/javascript-take-every-nth-element-of-array
 8. For - in loop: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in
+9. Current date (no jquery): https://www.freecodecamp.org/news/javascript-get-current-date-todays-date-in-js/
