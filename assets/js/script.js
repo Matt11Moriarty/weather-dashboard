@@ -35,7 +35,7 @@ function currentDate () {
 }
 
   
-//api call functions
+//api call function
 function geocode(event) {
     
     event.preventDefault();
