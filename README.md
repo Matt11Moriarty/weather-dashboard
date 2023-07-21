@@ -12,7 +12,7 @@ I also solidified my understanding of bootstrap, and put it to good use in build
 
 - [Weather Dashboard](#weather-dashboard)
   - [Description](#description)
-  - [Table of Contents (Optional)](#table-of-contents-optional)
+  - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Credits](#credits)
@@ -58,6 +58,7 @@ Resources:
 10. Opacity on bg but not text: https://www.geeksforgeeks.org/set-the-opacity-only-to-background-color-not-on-the-text-in-css/
 11. Get the icons to show: https://stackoverflow.com/questions/44177417/how-to-display-openweathermap-weather-icon
 12. Google fonts: https://fonts.google.com/knowledge/using_type/using_web_fonts
+13. Font awesome: https://fontawesome.com/icons/poo-storm?f=classic&s=solid
 
 ## License
 
