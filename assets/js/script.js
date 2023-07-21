@@ -45,7 +45,7 @@ function currentDate () {
 //api call function
 function searchOnClick(event) {
     event.preventDefault();
-    var city = searchBar.value;
+    var city = searchBar.value.trim();
     getData(city);
 }
 
@@ -112,10 +112,7 @@ function currentDay (todaysData) {
 
 }
 
-function test() {
-    console.log("it works!!");
-}
-function saveToHistory(event) {
+function saveToHistory() {
     var historyButton = document.createElement("button")
     historyButton.classList.add("btn", "btn-light", "m-1", "col-12")
     historyButton.setAttribute("style", "max-width: 9rem;")
