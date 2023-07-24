@@ -123,6 +123,15 @@ function saveToHistory() {
     historyButton.onclick = () => {getData(historyButton.textContent)};
 }
 
+function formatDate(inputDate) {
+    const dateObj = new Date(inputDate);
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const year = String(dateObj.getFullYear()).substr(2);
+  
+    return `${month}/${day}/${year}`;
+  }
+
 
 function getFiveDayForecast(forecastData) {
     forecastSection.innerHTML = '';
@@ -154,7 +163,8 @@ function printFiveDayForecast (forecast) {
             if (weatherType === "date") {
                 var date = document.createElement("h6")
                 forecastCard.append(date)
-                date.textContent = currentDate();
+                //working here
+                date.textContent = formatDate(dayOfWeather.date[0]);
                 date.setAttribute("style", "font-size: 20px");
             }
             else if (weatherType === "icon") {
