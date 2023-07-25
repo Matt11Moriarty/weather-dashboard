@@ -21,7 +21,6 @@ var clearHistory = document.querySelector('#clear-history');
 //event listeners
 searchButton.addEventListener('click', function (event) {
     searchOnClick(event);
-    saveToHistory(event);
 }
 );
 clearHistory.addEventListener('click', function(event){
@@ -37,10 +36,10 @@ clearHistory.addEventListener('click', function(event){
 function searchOnClick(event) {
     event.preventDefault();
     var city = searchBar.value.trim();
-    getData(city);
+    getData(city, true);
 }
 
-function getData(city){
+function getData(city, newButton = false){
     var geocodeUri = `${endpoint}/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
     
     var latLong = [];
@@ -61,19 +60,21 @@ function getData(city){
             else {
                 latLong[0] = data[0].lat;
                 latLong[1] = data[0].lon;
-
+                if(newButton) saveToHistory(city)
                 return fetch(`${endpoint}/data/2.5/forecast?lat=${latLong[0]}&lon=${latLong[1]}&appid=${apiKey}&units=imperial`);
             }
         })
         .then(function (response) {
             searchBar.value = "";
 
-            return response.json();
+            return response ? response.json() : {};
         })
         .then(function(data) {
             weather.fiveday = getFiveDayForecast(data);
         })
         .then(function () {
+            if (!latLong.length) return;
+
             fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latLong[0]}&lon=${latLong[1]}&units=imperial&appid=${apiKey}`)
             .then(function(response) {
                 return response.json();
@@ -90,6 +91,7 @@ function getData(city){
 
 //display functions
 function currentDay (todaysData) {
+    if(!todaysData) return;
 
     cityDateText.textContent = `${todaysData.name} (${dayjs().format('MM/DD/YYYY')})`;
     var currentDayIcon = document.createElement("img");
@@ -103,11 +105,11 @@ function currentDay (todaysData) {
 
 }
 
-function saveToHistory() {
+function saveToHistory(city) {
     var historyButton = document.createElement("button")
     historyButton.classList.add("btn", "btn-light", "m-1", "col-12")
     historyButton.setAttribute("style", "max-width: 9rem;")
-    historyButton.textContent = searchBar.value;
+    historyButton.textContent = city;
     
 
     searchHistory.prepend(historyButton);
@@ -116,9 +118,10 @@ function saveToHistory() {
 
 
 function getFiveDayForecast(forecastData) {
+    
     forecastSection.innerHTML = '';
 
-    var fullForecast = forecastData.list
+    var fullForecast = forecastData.list || []
     var trimmedFiveDay = []
     for (let i = 0; i < fullForecast.length; i+=8) {
         const oneDay = fullForecast[i];
