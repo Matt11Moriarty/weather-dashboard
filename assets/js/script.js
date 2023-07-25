@@ -1,5 +1,7 @@
+//dont look
 var apiKey = 'fd5bcdf5b68d3fbf74e736379ffe6e3c';
-var endpoint = 'https://api.openweathermap.org'
+
+var endpoint = 'https://api.openweathermap.org';
 
 
 
@@ -28,18 +30,7 @@ clearHistory.addEventListener('click', function(event){
 ) 
 
 
-//utility functions
-function currentDate () {
-    const date = new Date();
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${month}/${day}/${year}`;
-    return currentDate;
-}
 
   
 //api call function
@@ -100,7 +91,7 @@ function getData(city){
 //display functions
 function currentDay (todaysData) {
 
-    cityDateText.textContent = `${todaysData.name} (${currentDate()})`;
+    cityDateText.textContent = `${todaysData.name} (${dayjs().format('MM/DD/YYYY')})`;
     var currentDayIcon = document.createElement("img");
     currentDayIcon.classList.add("weather-icon");
     currentDayIcon.src = `http://openweathermap.org/img/w/${todaysData.weather[0].icon}.png`;
@@ -122,15 +113,6 @@ function saveToHistory() {
     searchHistory.prepend(historyButton);
     historyButton.onclick = () => {getData(historyButton.textContent)};
 }
-
-function formatDate(inputDate) {
-    const dateObj = new Date(inputDate);
-    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const day = String(dateObj.getDate()).padStart(2, '0');
-    const year = String(dateObj.getFullYear()).substr(2);
-  
-    return `${month}/${day}/${year}`;
-  }
 
 
 function getFiveDayForecast(forecastData) {
@@ -164,7 +146,7 @@ function printFiveDayForecast (forecast) {
                 var date = document.createElement("h6")
                 forecastCard.append(date)
                 //working here
-                date.textContent = formatDate(dayOfWeather.date[0]);
+                date.textContent = dayjs(dayOfWeather.date[0]).format('MM/DD/YYYY');
                 date.setAttribute("style", "font-size: 20px");
             }
             else if (weatherType === "icon") {
