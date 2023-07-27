@@ -24,18 +24,28 @@ searchButton.addEventListener('click', function (event) {
 }
 );
 clearHistory.addEventListener('click', function(event){
-    searchHistory.innerHTML = '';
+    // searchHistory.innerHTML = '';
+    localStorage.setItem("cities", []);
+    location.reload();
 }
 ) 
+
+
+function getLocalStorage(key){
+    var res = localStorage.getItem("cities") || "[]";
+    var citiesArray = JSON.parse(res);
+    return citiesArray
+}
 
   
 //api call function
 function searchOnClick(event) {
     event.preventDefault();
     var city = searchBar.value.trim();
-    var searchHistoryArray = JSON.parse(localStorage.getItem("cities")) || [];
+    searchHistoryArray = getLocalStorage("cities");
+    //var searchHistoryArray = JSON.parse(localStorage.getItem("cities")) || [];
     
-    localStorage.getItem("cities") || [];
+    //localStorage.getItem("cities") || [];
     searchHistoryArray.push(city);
     localStorage.setItem("cities", JSON.stringify(searchHistoryArray));
 
@@ -108,8 +118,12 @@ function currentDay (todaysData) {
 
 }
 
+saveToHistory();
 function saveToHistory(city) {
-    var citiesArray = JSON.parse(localStorage.getItem("cities")) || [];
+    //var res = localStorage.getItem("cities") || "[]";
+    //console.log(res)
+    
+    var citiesArray = getLocalStorage("cities");
 
     searchHistory.innerHTML = '';
   
