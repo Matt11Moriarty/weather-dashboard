@@ -44,11 +44,11 @@ Site URL: https://matt11moriarty.github.io/weather-dashboard/
 1. Navigate to the site listed above
 2. Enter any desired city in the input bar
    1. Invalid entries will get an alert
-3. Input will be saved to search history
+3. Input will be saved to search history in local storage
 4. Current weather report for the city will be displayed in the top section
 5. Five day forecast will be displayed in the bottom section
 6. If you click on an item in the search history, it will run again for that city
-7. Clear history button removes the history list
+7. Clear history button removes the history list from local storage
 
 
 ![alt text](./assets/images/weather_dashboard.gif)
